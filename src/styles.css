@@ -6,8 +6,17 @@
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
-  color: #e0e0e0;
+  /* theme variables inspired by the target site */
+  --bg-1: #070712;
+  --bg-2: #0f1726;
+  --bg-3: #11102a;
+  --accent-start: #00d4ff;
+  --accent-end: #7b2ff7;
+  --muted: #a0a0a0;
+  --card-bg: rgba(255,255,255,0.03);
+
+  background: linear-gradient(135deg, var(--bg-1) 0%, var(--bg-2) 55%, var(--bg-3) 100%);
+  color: #e6eef8;
   cursor: none;
   overflow-x: hidden;
 }
@@ -22,8 +31,52 @@ body {
   pointer-events: none;
   z-index: 9999;
   transition: all 0.1s ease;
-  background: rgba(0, 212, 255, 0.2);
-  box-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+  background: rgba(0, 212, 255, 0.12);
+  box-shadow: 0 0 18px rgba(0, 212, 255, 0.35);
+}
+
+/* reveal animation helpers */
+.pre-reveal {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.reveal {
+  animation: fadeUp 0.72s cubic-bezier(.22,.98,.36,1) forwards;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* nav scrolled state */
+nav.scrolled {
+  background: linear-gradient(180deg, rgba(7,7,12,0.82), rgba(15,23,38,0.86));
+  backdrop-filter: blur(18px);
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+
+/* sleek glowing scrollbar (WebKit + Firefox) */
+html::-webkit-scrollbar {
+  width: 11px;
+}
+
+html::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+html::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, rgba(0,212,255,0.20), rgba(123,47,247,0.16));
+  border-radius: 999px;
+  box-shadow: 0 0 14px rgba(123,47,247,0.08), inset 0 0 6px rgba(0,0,0,0.25);
+  border: 2px solid rgba(0,0,0,0.06);
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0,212,255,0.22) transparent;
 }
 
 /* Navigation */
@@ -42,9 +95,9 @@ nav {
 }
 
 .logo {
-  font-size: 40px;
-  font-weight: 800;
-  background: linear-gradient(135deg, #00d4ff, #7b2ff7);
+  font-size: 24px;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--accent-start), var(--accent-end));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -66,7 +119,7 @@ nav {
 }
 
 .nav-links a:hover {
-  color: #00d4ff;
+  color: var(--accent-start);
 }
 
 .nav-links a::after {
@@ -99,7 +152,7 @@ nav {
   font-size: clamp(40px, 8vw, 90px);
   font-weight: 800;
   margin-bottom: 20px;
-  background: linear-gradient(135deg, #ffffff, #00d4ff, #7b2ff7);
+  background: linear-gradient(135deg, #ffffff, var(--accent-start), var(--accent-end));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -108,7 +161,7 @@ nav {
 
 .hero p {
   font-size: clamp(16px, 2vw, 20px);
-  color: #a0a0a0;
+  color: var(--muted);
   max-width: 700px;
   margin-bottom: 40px;
   line-height: 1.6;
@@ -116,7 +169,7 @@ nav {
 
 .cta-button {
   padding: 15px 40px;
-  background: linear-gradient(135deg, #00d4ff, #7b2ff7);
+  background: linear-gradient(135deg, var(--accent-start), var(--accent-end));
   color: white;
   text-decoration: none;
   border-radius: 50px;
@@ -143,7 +196,7 @@ section {
   font-size: clamp(32px, 5vw, 48px);
   font-weight: 700;
   margin-bottom: 20px;
-  background: linear-gradient(135deg, #ffffff, #00d4ff);
+  background: linear-gradient(135deg, #ffffff, var(--accent-start));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -159,15 +212,15 @@ section {
 /* Projects Section */
 .projects-grid {
   display: grid;
-  /* use a smaller min width so the grid can collapse gracefully on small screens */
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  /* slightly larger min width for better card layout */
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: 24px;
   margin-top: 60px;
 }
 
 .project-card {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--card-bg);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 20px;
   padding: 30px;
   transition: all 0.4s ease;
@@ -212,7 +265,7 @@ section {
 }
 
 .project-card p {
-  color: #b0b0b0;
+  color: #c4cfe6;
   line-height: 1.7;
   margin-bottom: 15px;
   /* allow wrapping and avoid accidental truncation */
@@ -455,7 +508,8 @@ footer {
 
 /* Hide custom cursor on touch/coarse pointer devices */
 @media (pointer: coarse), (hover: none) {
-  #cursor {
+  #cursor,
+  #trail {
     display: none;
   }
 }

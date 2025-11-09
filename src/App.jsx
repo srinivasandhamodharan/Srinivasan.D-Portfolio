@@ -43,6 +43,20 @@ export default function App() {
     }
   }, [])
 
+  // add scroll listener to change nav style when page scrolls
+  useEffect(() => {
+    const nav = document.querySelector('nav')
+    if (!nav) return
+    const onScroll = () => {
+      if (window.scrollY > 36) nav.classList.add('scrolled')
+      else nav.classList.remove('scrolled')
+    }
+    window.addEventListener('scroll', onScroll, { passive: true })
+    // run once
+    onScroll()
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
   useEffect(() => {
     const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -100px 0px' }
     const observer = new IntersectionObserver((entries) => {
@@ -54,11 +68,10 @@ export default function App() {
       })
     }, observerOptions)
 
-    const targets = document.querySelectorAll('.project-card, .experience-card, .skill-category')
+    const targets = document.querySelectorAll('.project-card, .experience-card, .skill-category, .section-title, .hero h1')
     targets.forEach(el => {
-      el.style.opacity = '0'
-      el.style.transform = 'translateY(30px)'
-      el.style.transition = 'all 0.6s ease'
+      // mark pre-reveal state; CSS will define animation when .reveal is added
+      el.classList.add('pre-reveal')
       observer.observe(el)
     })
 
@@ -67,7 +80,7 @@ export default function App() {
 
   return (
     <div>
-      <div id="cursor" ref={cursorRef}></div>
+        <div id="cursor" ref={cursorRef}></div>
 
       <nav>
         <div className="logo">Srinivasan D</div>
