@@ -95,8 +95,8 @@ nav {
 }
 
 .logo {
-  font-size: 24px;
-  font-weight: 700;
+  font-size: 55px;
+  font-weight: 1000;
   background: linear-gradient(135deg, var(--accent-start), var(--accent-end));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
